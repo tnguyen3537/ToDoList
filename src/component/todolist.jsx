@@ -1,22 +1,33 @@
 import { useState } from "react";
-import TodoTable from "./todotable";
+import { AgGridReact } from "ag-grid-react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-material.css";
 
 function Todolist() {
-  const [todo, setTodo] = useState({ description: "", duedate: "" });
+  const [todo, setTodo] = useState({
+    description: "",
+    duedate: "",
+    priority: "",
+  });
   const [todos, setTodos] = useState([]);
+  const [colDefs, setcolDefs] = useState([
+    { field: "description", filter: true, floatingFilter: true, editable: true },
+    { field: "duedate", filter: true, floatingFilter: true },
+    { field: "priority", filter: true, floatingFilter: true, cellStyle: params => params.value === "High" ? {color: 'red'} : {color: 'black'} },
+  ]);
 
   const handleTodo = () => {
     if (!todo.description || !todo.duedate) {
       alert("Type something first");
     } else {
       setTodos([todo, ...todos]);
-      setTodo({ description: "", duedate: "" });
+      setTodo({ description: "", duedate: "", priority: "" });
     }
   };
 
-  const handleDelete = (row) => {
-    setTodos(todos.filter((_, index) => row != index));
-  };
+  // const handleDelete = (row) => {
+  //   setTodos(todos.filter((_, index) => row != index));
+  // };
 
   return (
     <>
@@ -35,9 +46,17 @@ function Todolist() {
         value={todo.duedate}
         onChange={(event) => setTodo({ ...todo, duedate: event.target.value })}
       />
+      <label>Priority</label>
+      <input
+        placeholder="Type priority here"
+        value={todo.priority}
+        onChange={(event) => setTodo({ ...todo, priority: event.target.value })}
+      />
       <button onClick={handleTodo}>Add To Do</button>
 
-      <TodoTable todos={todos} handleDelete={handleDelete} />
+      <div className="ag-theme-material" style={{ height: 500, width: "100%" }}>
+        <AgGridReact rowData={todos} columnDefs={colDefs} />
+      </div>
     </>
   );
 }
