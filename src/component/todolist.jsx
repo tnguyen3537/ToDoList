@@ -42,7 +42,8 @@ function Todolist() {
       alert("Type something first");
     } else {
       setTodos([todo, ...todos]);
-      setTodo({ description: "", duedate: "", priority: "" });
+      setTodo({ description: "", duedate: "", priority: "" })
+      setDate(null);
     }
   };
 
