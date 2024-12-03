@@ -17,7 +17,7 @@ function Todolist() {
     priority: "",
   });
   const [todos, setTodos] = useState([]);
-  const [colDefs, setcolDefs] = useState([
+  const [colDefs] = useState([
     {
       field: "description",
       filter: true,
